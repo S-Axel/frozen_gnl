@@ -23,7 +23,9 @@ then
 	done
 	echo ${PROJECT_PATH} > ${PROJECT_PATH_CONFIG_FILE}
 fi
+PROJECT_PATH="$(cd "$(dirname "${PROJECT_PATH}")"; pwd)/$(basename "${PROJECT_PATH}")"
 
 ##### END - GET GNL PROJECT PATH
 
 
+make -C tests/test01 PATH="${PROJECT_PATH}"
