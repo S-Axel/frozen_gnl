@@ -6,35 +6,35 @@
 #    By: asabotie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 19:29:28 by asabotie          #+#    #+#              #
-#    Updated: 2019/10/19 19:38:15 by asabotie         ###   ########.fr        #
+#    Updated: 2019/10/22 11:17:13 by asabotie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-SRCS		=	${PATH}/get_next_line.c \
-			${PATH}/get_next_line_utils.c \
+SRCS		=	$(PATH)/get_next_line.c \
+			$(PATH)/get_next_line_utils.c \
 			main.c
 
-OBJS		=	${SRCS:.c=.o}
+OBJS		=	$(SRCS:.c=.o)
 
 NAME		=	gnl_test
 
-CFLAGS		=	-Wall -Wextra -Werror -I${PATH}
+CFLAGS		=	-Wall -Wextra -Werror -I$(PATH) -D BUFFER_SIZE=32
 
 CC		=	gcc
 
 RM		=	rm -f
 
-all:		${NAME}
+all:		$(NAME)
 
-${NAME}:	${OBJS}	
-			 ${CC} - o ${NAME} ${OBJS}
+$(NAME):	$(OBJS)
+			$(CC) -o $(NAME) $(OBJS)
 
-clean:		
-			${RM} ${OBJS} ${OBJSBONUS}
+clean:
+			$(RM) $(OBJS)
 
 fclean:		clean
-			${RM} ${NAME}
+			$(RM) $(NAME)
 
 re:			fclean all
 
