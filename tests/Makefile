@@ -6,10 +6,9 @@
 #    By: asabotie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 19:29:28 by asabotie          #+#    #+#              #
-#    Updated: 2019/10/22 11:17:13 by asabotie         ###   ########.fr        #
+#    Updated: 2019/10/22 17:56:08 by asabotie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 SRCS		=	$(PATH)/get_next_line.c \
 			$(PATH)/get_next_line_utils.c \
@@ -19,7 +18,7 @@ OBJS		=	$(SRCS:.c=.o)
 
 NAME		=	gnl_test
 
-CFLAGS		=	-Wall -Wextra -Werror -I$(PATH) -D BUFFER_SIZE=32
+CFLAGS		=	-Wall -Wextra -Werror -I$(PATH) -D $(BUFFER_SIZE)
 
 CC		=	gcc
 

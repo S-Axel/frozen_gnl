@@ -1,10 +1,36 @@
-#!/bin/sh
+#!/bin/bash
+
+
+
+
+
+##### COLOR FUNCTIONS #####
+
+putstr_red()
+{
+	echo -n $(tput setaf 1) $@ $(tput setaf 9) 
+}
+
+putstr_green()
+{
+	echo -n $(tput setaf 2) $@ $(tput setaf 9) 
+}
+
+
+
+
+
+##### GET CURRENT SCRIPT PATH #####
 
 SCRIPT_PATH="$(cd "$(dirname "${BASH_SOURCE}")"; pwd)"
 
-##### BEG - GET GNL PROJECT PATH
 
-PROJECT_PATH_CONFIG_FILE=${SCRIPT_PATH}/project_path.config
+
+
+
+##### GET GNL PROJECT PATH #####
+
+PROJECT_PATH_CONFIG_FILE=${SCRIPT_PATH}/gnl_path.config
 
 if [ -f "${PROJECT_PATH_CONFIG_FILE}" ]
 then
@@ -20,16 +46,36 @@ then
 			echo ${PROJECT_PATH} directory not found.
 		fi
 		echo Type in your GNL project path. It will be stored in ${PROJECT_PATH_CONFIG_FILE} file.
-		echo  \(EXAMPLE: ../get_next_line\):
-		read PROJECT_PATH
+		read -p "(EXAMPLE: ../get_next_line): " -e PROJECT_PATH
 		PROJECT_PATH="$(cd "$(dirname "${PROJECT_PATH}")"; pwd)/$(basename "${PROJECT_PATH}")"
 	done
 	echo ${PROJECT_PATH} > ${PROJECT_PATH_CONFIG_FILE}
 fi
 
-##### END - GET GNL PROJECT PATH
 
-make -C ${SCRIPT_PATH}/tests/test01 PATH="${PROJECT_PATH}"
-make clean -C ${SCRIPT_PATH}/tests/test01 PATH="${PROJECT_PATH}"
-${SCRIPT_PATH}/tests/test01/gnl_test
+
+
+
+##### RUN TESTS #####
+
+MAIN_TEST_DIR=${SCRIPT_PATH}/tests
+for TEST_DIR in ${MAIN_TEST_DIR}/*
+do
+	if [ -d ${TEST_DIR} ]
+	then
+		BUFFER_SIZE=<${TEST_DIR}/buffer_size
+		echo ++++++${BUFFER_SIZE}
+		#make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
+		#make -C ${TEST_DIR} PATH="${PROJECT_PATH}" BUFFER_SIZE="32" 1> /dev/null
+		#cd ${TEST_DIR}; ./gnl_test 1> user_output
+		#make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
+		#RESULT=$(diff expected_output user_output)
+		#if [ ${RESULT} ]
+		#then
+	#		echo -n $(basename ${TEST_DIR}); putstr_red " KO"; echo
+	#	else
+	#		echo -n $(basename ${TEST_DIR}); putstr_green " OK"; echo
+	#	fi
+	fi
+done
 
