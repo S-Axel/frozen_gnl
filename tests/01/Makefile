@@ -6,7 +6,7 @@
 #    By: asabotie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 19:29:28 by asabotie          #+#    #+#              #
-#    Updated: 2019/10/22 17:56:08 by asabotie         ###   ########.fr        #
+#    Updated: 2019/10/25 10:58:01 by asabotie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS		=	$(SRCS:.c=.o)
 
 NAME		=	gnl_test
 
-CFLAGS		=	-Wall -Wextra -Werror -I$(PATH) -D $(BUFFER_SIZE)
+CFLAGS		=	-Wall -Wextra -Werror -I$(PATH) -D BUFFER_SIZE=$(BUFFER_SIZE)
 
 CC		=	gcc
 

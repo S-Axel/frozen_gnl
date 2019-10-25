@@ -61,21 +61,17 @@ fi
 MAIN_TEST_DIR=${SCRIPT_PATH}/tests
 for TEST_DIR in ${MAIN_TEST_DIR}/*
 do
-	if [ -d ${TEST_DIR} ]
+	BUFFER_SIZE=$(<${TEST_DIR}/buffer_size)
+	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
+	make -C ${TEST_DIR} PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
+	cd ${TEST_DIR}; ./gnl_test 1> user_output
+	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
+	RESULT=$(diff expected_output user_output)
+	if [ ${RESULT} ]
 	then
-		BUFFER_SIZE=<${TEST_DIR}/buffer_size
-		echo ++++++${BUFFER_SIZE}
-		#make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
-		#make -C ${TEST_DIR} PATH="${PROJECT_PATH}" BUFFER_SIZE="32" 1> /dev/null
-		#cd ${TEST_DIR}; ./gnl_test 1> user_output
-		#make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
-		#RESULT=$(diff expected_output user_output)
-		#if [ ${RESULT} ]
-		#then
-	#		echo -n $(basename ${TEST_DIR}); putstr_red " KO"; echo
-	#	else
-	#		echo -n $(basename ${TEST_DIR}); putstr_green " OK"; echo
-	#	fi
+		echo -n $(basename ${TEST_DIR}); putstr_red " KO"; echo
+	else
+		echo -n $(basename ${TEST_DIR}); putstr_green " OK"; echo
 	fi
 done
 
