@@ -1,3 +1,4 @@
 *.config
 gnl_test
 user_output
+errors

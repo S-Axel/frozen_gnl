@@ -8,12 +8,22 @@
 
 putstr_red()
 {
-	echo -n $(tput setaf 1) $@ $(tput setaf 9) 
+	echo -ne "$(tput setaf 1)$@$(tput setaf 7)"
 }
 
 putstr_green()
 {
-	echo -n $(tput setaf 2) $@ $(tput setaf 9) 
+	echo -ne "$(tput setaf 2)$@$(tput setaf 7)"
+}
+
+putstr_cyan()
+{
+	echo -ne "$(tput setaf 6)$@$(tput setaf 7)"
+}
+
+putstr_magenta()
+{
+	echo -ne "$(tput setaf 5)$@$(tput setaf 7)"
 }
 
 
@@ -61,17 +71,43 @@ fi
 MAIN_TEST_DIR=${SCRIPT_PATH}/tests
 for TEST_DIR in ${MAIN_TEST_DIR}/*
 do
-	BUFFER_SIZE=$(<${TEST_DIR}/buffer_size)
-	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
-	make -C ${TEST_DIR} PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
-	cd ${TEST_DIR}; ./gnl_test 1> user_output
-	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null
-	RESULT=$(diff expected_output user_output)
-	if [ ${RESULT} ]
+	echo -n $(basename ${TEST_DIR})
+	cd ${TEST_DIR}
+	ERRORS=""
+	BUFFER_SIZE=$(<buffer_size)
+	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null 2>> errors
+	rm user_output
+	./gnl_test 1> user_output 2>> errors
+	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null 2>> errors
+	DIFF_RESULT=$(diff expected_output user_output)
+	ERRORS=$(<errors)
+	rm errors
+	if [ "${DIFF_RESULT}" -o "${ERRORS}" ]
 	then
-		echo -n $(basename ${TEST_DIR}); putstr_red " KO"; echo
+		putstr_red " KO"
+		echo -e "\n"
+		if [ -f description ]
+		then
+			echo " description:"; putstr_magenta "$(cat -e description)"
+			echo -e "\n\n"
+		fi
+		putstr_cyan " buffer size:"; echo; putstr_magenta "$(cat -e buffer_size)"
+		echo -e "\n\n"
+		putstr_cyan " file to read:"; echo; putstr_magenta "$(cat -e file_to_read)"
+		echo -e "\n\n"
+		putstr_cyan " expected output:"; echo; putstr_magenta "$(cat -e expected_output)"
+		echo -e "\n\n"
+		putstr_cyan " your output:"; echo; putstr_magenta "$(cat -e user_output)"
+		echo -e "\n\n"
+		if [ "${ERRORS}" ]
+		then
+			echo "${ERRORS}"
+		else
+			putstr_cyan " diff:"; echo; putstr_magenta "${DIFF_RESULT}"
+			echo -e "\n"
+		fi
 	else
-		echo -n $(basename ${TEST_DIR}); putstr_green " OK"; echo
+		putstr_green " OK"; echo
 	fi
 done
 

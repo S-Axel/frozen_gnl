@@ -6,7 +6,7 @@
 /*   By: asabotie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 19:38:34 by asabotie          #+#    #+#             */
-/*   Updated: 2019/10/25 17:10:10 by asabotie         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:56:52 by asabotie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,10 @@
 
 int	main(void)
 {
-	int	fd;
-	char	*line = NULL;
-	char	*file_to_read = "file_to_read";
 	int	ret;
+	char	*split;
 
-	fd = open(file_to_read, O_RDONLY);
-	if (fd != -1)
-	{
-		while ((ret = get_next_line(fd, &line)) == 1)
-		{
-			printf("%s\n", line);
-		}
-		close(fd);
-		printf("get_next_line return value: %d\n", ret);
-	}
-	else
-		printf("Couldn't open %s.\n", file_to_read);
+	ret = get_next_line(-1, &split);
+	printf("get_next_line return value: %d\n", ret);
 	return (0);
 }
