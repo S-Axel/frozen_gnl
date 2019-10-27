@@ -2,3 +2,5 @@
 gnl_test
 user_output
 errors
+*.o
+*.dSYM

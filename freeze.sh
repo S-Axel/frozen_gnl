@@ -1,6 +1,10 @@
 #!/bin/bash
 
+## TODO
 
+### Add a timeout
+### Add a flag to stop at first error or to diplay only first error
+### Add a flag to display a description for each test
 
 
 
@@ -65,20 +69,35 @@ fi
 
 
 
-
-##### RUN TESTS #####
+##### PREPARE TESTS ######
 
 MAIN_TEST_DIR=${SCRIPT_PATH}/tests
+
+##### DEBUG OPTION #####
+
+if [ "${1}" = "-debug" -a "${2}" ]
+then
+	cd ${MAIN_TEST_DIR}/${2}
+	BUFFER_SIZE=$(<buffer_size)
+	make fclean PATH="${PROJECT_PATH}"
+	make debug PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}"
+	lldb ./gnl_test
+	make fclean PATH="${PROJECT_PATH}"
+	exit
+fi
+	
+##### RUN TESTS #####
+
 for TEST_DIR in ${MAIN_TEST_DIR}/*
 do
 	echo -n $(basename ${TEST_DIR})
 	cd ${TEST_DIR}
 	ERRORS=""
 	BUFFER_SIZE=$(<buffer_size)
-	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null 2>> errors
+	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 2>> errors 1> /dev/null
 	rm user_output
-	./gnl_test 1> user_output 2>> errors
-	make fclean -C ${TEST_DIR} PATH="${PROJECT_PATH}" 1> /dev/null 2>> errors
+	./gnl_test 2>> errors 1> user_output
+	make fclean  PATH="${PROJECT_PATH}" 2>> errors 1> /dev/null
 	DIFF_RESULT=$(diff expected_output user_output)
 	ERRORS=$(<errors)
 	rm errors
@@ -88,7 +107,7 @@ do
 		echo -e "\n"
 		if [ -f description ]
 		then
-			echo " description:"; putstr_magenta "$(cat -e description)"
+			putstr_cyan " description:"; echo; putstr_magenta "$(cat -e description)"
 			echo -e "\n\n"
 		fi
 		putstr_cyan " buffer size:"; echo; putstr_magenta "$(cat -e buffer_size)"
@@ -101,11 +120,11 @@ do
 		echo -e "\n\n"
 		if [ "${ERRORS}" ]
 		then
-			echo "${ERRORS}"
+			putstr_cyan " errors:"; echo; putstr_magenta "${ERRORS}"
 		else
 			putstr_cyan " diff:"; echo; putstr_magenta "${DIFF_RESULT}"
-			echo -e "\n"
 		fi
+		echo -e "\n"
 	else
 		putstr_green " OK"; echo
 	fi

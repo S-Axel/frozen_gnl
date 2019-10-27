@@ -6,7 +6,7 @@
 #    By: asabotie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/10/19 19:29:28 by asabotie          #+#    #+#              #
-#    Updated: 2019/10/25 10:58:01 by asabotie         ###   ########.fr        #
+#    Updated: 2019/10/27 16:05:04 by asabotie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,9 @@ fclean:		clean
 			$(RM) $(NAME)
 
 re:			fclean all
+
+debug:		
+		$(CC) $(CFLAGS) -g $(SRCS) -o $(NAME)
 
 .PHONY:		 all clean fclean re
 
