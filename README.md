@@ -3,7 +3,7 @@
 
 ### Tests for get_next_line project.
 
-#### --Work in progress--
+#### --Work In Progress--
 These tests will improve as I progress on the get_next_line project.
 
 You can expect regular updates.
