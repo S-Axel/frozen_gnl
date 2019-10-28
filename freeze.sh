@@ -68,6 +68,7 @@ fi
 
 
 
+
 ##### PREPARE TESTS ######
 
 MAIN_TEST_DIR=${SCRIPT_PATH}/tests
@@ -86,6 +87,40 @@ display_test_description()
 	putstr_cyan " expected output:"; echo; putstr_magenta "$(cat -e expected_output)"
 	echo -e "\n\n"
 }
+
+run_test()
+{
+	ERRORS=""
+	BUFFER_SIZE=$(<buffer_size)
+	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 2>> errors 1> /dev/null
+	rm user_output
+	./gnl_test 2>> errors 1> user_output
+	make fclean  PATH="${PROJECT_PATH}" 2>> errors 1> /dev/null
+	DIFF_RESULT=$(diff expected_output user_output)
+	ERRORS=$(<errors)
+	rm errors
+	if [ "${DIFF_RESULT}" -o "${ERRORS}" ]
+	then
+		putstr_red " KO"
+		echo -e "\n"
+		display_test_description
+		putstr_cyan " your output:"; echo; putstr_magenta "$(cat -e user_output)"
+		echo -e "\n\n"
+		if [ "${ERRORS}" ]
+		then
+			putstr_cyan " errors:"; echo; putstr_magenta "${ERRORS}"
+		else
+			putstr_cyan " diff:"; echo; putstr_magenta "${DIFF_RESULT}"
+		fi
+		echo -e "\n"
+	else
+		putstr_green " OK"; echo
+	fi
+}
+
+
+
+
 
 ##### DEBUG OPTION #####
 
@@ -123,6 +158,23 @@ then
 fi
 
 
+
+
+
+##### SPECIFIC TEST OPTION #####
+
+if [ "${1}" = "-test" -a "${2}" ]
+then
+	cd ${MAIN_TEST_DIR}/${2}
+	echo -n ${2}
+	run_test
+	exit
+fi
+
+
+
+
+
 ##### UNKNOWN OPTION #####
 
 if [ "${1}" ]
@@ -131,38 +183,15 @@ then
 	exit
 fi
 
+
+
+
 	
 ##### RUN TESTS #####
 
 for TEST_DIR in ${MAIN_TEST_DIR}/*
 do
-	echo -n $(basename ${TEST_DIR})
 	cd ${TEST_DIR}
-	ERRORS=""
-	BUFFER_SIZE=$(<buffer_size)
-	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 2>> errors 1> /dev/null
-	rm user_output
-	./gnl_test 2>> errors 1> user_output
-	make fclean  PATH="${PROJECT_PATH}" 2>> errors 1> /dev/null
-	DIFF_RESULT=$(diff expected_output user_output)
-	ERRORS=$(<errors)
-	rm errors
-	if [ "${DIFF_RESULT}" -o "${ERRORS}" ]
-	then
-		putstr_red " KO"
-		echo -e "\n"
-		display_test_description
-		putstr_cyan " your output:"; echo; putstr_magenta "$(cat -e user_output)"
-		echo -e "\n\n"
-		if [ "${ERRORS}" ]
-		then
-			putstr_cyan " errors:"; echo; putstr_magenta "${ERRORS}"
-		else
-			putstr_cyan " diff:"; echo; putstr_magenta "${DIFF_RESULT}"
-		fi
-		echo -e "\n"
-	else
-		putstr_green " OK"; echo
-	fi
+	echo -n $(basename ${TEST_DIR})
+	run_test
 done
-
