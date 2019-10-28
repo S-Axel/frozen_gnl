@@ -1,8 +1,15 @@
 # frozen_gnl
 
 
-Tests for get_next_line project.
+### Tests for get_next_line project.
 
+#### --Work in progress--
+These tests will improve as I progress on the get_next_line project.
+
+You can expect regular updates.
+
+
+#### How To Test
 just launch `freeze.sh` and enjoy :-)
 
 
@@ -18,6 +25,6 @@ launch test 06 with lldb
 
 
 
---Work in progress--
+
  
  
