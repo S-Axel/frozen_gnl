@@ -8,6 +8,8 @@ These tests will improve as I progress on the get_next_line project.
 
 You can expect regular updates.
 
+To give me feedbacks, ask questions or come work with me on gnl: I am on slack, my login is asabotie
+
 
 #### How To Test
 just launch `freeze.sh` and enjoy :-)
