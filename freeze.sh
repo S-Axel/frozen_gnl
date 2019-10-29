@@ -175,6 +175,22 @@ fi
 
 
 
+##### STDIN OPTION #####
+
+if [ "${1}" = "-stdin" ]
+then
+	cd stdin_test
+	read -p "BUFFER_SIZE: " -e BUFFER_SIZE
+	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
+	./gnl_test
+	make fclean  PATH="${PROJECT_PATH}" 1> /dev/null
+	exit
+fi
+
+
+
+
+
 ##### UNKNOWN OPTION #####
 
 if [ "${1}" ]
