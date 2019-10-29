@@ -93,7 +93,7 @@ run_test()
 	ERRORS=""
 	BUFFER_SIZE=$(<buffer_size)
 	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 2>> errors 1> /dev/null
-	rm user_output
+	rm -f user_output
 	./gnl_test 2>> errors 1> user_output
 	make fclean  PATH="${PROJECT_PATH}" 2>> errors 1> /dev/null
 	DIFF_RESULT=$(diff expected_output user_output)
@@ -179,7 +179,7 @@ fi
 
 if [ "${1}" = "-stdin" ]
 then
-	cd stdin_test
+	cd ${SCRIPT_PATH}/stdin_test
 	read -p "BUFFER_SIZE: " -e BUFFER_SIZE
 	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
 	./gnl_test
