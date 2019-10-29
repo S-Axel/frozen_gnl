@@ -21,6 +21,9 @@ list and describe all tests
 `freeze.sh -description 05`
 describe only test 05
 
+`freeze.sh -test 23`
+launch test 23 only
+
 `freeze.sh -debug 06`
 launch test 06 with lldb
 
