@@ -191,6 +191,24 @@ fi
 
 
 
+##### VALGRIND OPTION #####
+
+if [ "${1}" = "-valgrind" -a "${2}" ]
+then
+	cd ${MAIN_TEST_DIR}/${2}
+	BUFFER_SIZE=$(<buffer_size)
+	make fclean  PATH="${PROJECT_PATH}" 1> /dev/null
+	make debug PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
+	rm user_output
+	valgrind --leak-check=yes ./gnl_test
+	make fclean  PATH="${PROJECT_PATH}" 1> /dev/null
+	exit
+fi
+
+
+
+
+
 ##### UNKNOWN OPTION #####
 
 if [ "${1}" ]
