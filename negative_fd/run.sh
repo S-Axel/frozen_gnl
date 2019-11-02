@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\n" \#\#\#\#\# REGULAR TESTS \#\#\#\#\# "\n"
+echo -e "\n" \#\#\#\#\# NEGATIVE FD \#\#\#\#\# "\n"
 
 
 ##### COLOR FUNCTIONS #####

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\n" \#\#\#\#\# REGULAR TESTS \#\#\#\#\# "\n"
+echo -e "\n" \#\#\#\#\# LINE NULL \#\#\#\#\# "\n"
 
 
 ##### COLOR FUNCTIONS #####
