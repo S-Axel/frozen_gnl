@@ -6,7 +6,7 @@
 /*   By: asabotie <asabotie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/19 19:38:34 by asabotie          #+#    #+#             */
-/*   Updated: 2019/11/02 12:29:28 by asabotie         ###   ########.fr       */
+/*   Updated: 2019/11/04 16:04:57 by asabotie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(void)
 		free(line);
 		line = NULL;
 	}
-	printf("\n%d|%s\n", ret, line);
+	printf("%d|%s\n", ret, line);
 	free(line);
 	line = NULL;
 	return (0);
