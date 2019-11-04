@@ -16,20 +16,24 @@
 #include <unistd.h>
 #include "get_next_line.h"
 
-int	main(void)
+int	main(int ac, char **av)
 {
 	int	fd;
-	char	*file_to_read = "file_to_read";
 	int	ret;
 
-	fd = open(file_to_read, O_RDONLY);
+if (ac != 2)
+	{
+		printf("Internal Error: Wrong number of arguments\n");
+		return (1);
+	}
+	fd = open(av[1], O_RDONLY);
 	if (fd != -1)
 	{
 		ret = get_next_line(fd, NULL);
 		close(fd);
-		printf("%d\n", ret);
+		printf("%d|\n", ret);
 	}
 	else
-		printf("Couldn't open %s.\n", file_to_read);
+		printf("Couldn't open %s.\n", av[1]);
 	return (0);
 }

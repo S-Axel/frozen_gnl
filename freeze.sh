@@ -69,47 +69,6 @@ fi
 
 
 
-##### PREPARE TESTS ######
-
-#MAIN_TEST_DIR=${SCRIPT_PATH}/tests
-#
-#display_test_description()
-#{
-#	if [ -f description ]
-#	then
-#		putstr_cyan " description:"; echo; putstr_magenta "$(cat -e description)"
-#		echo -e "\n\n"
-#	fi
-#	putstr_cyan " buffer size:"; echo; putstr_magenta "$(cat -e buffer_size)"
-#	echo -e "\n\n"
-#	putstr_cyan " file to read:"; echo; putstr_magenta "$(cat -e file_to_read)"
-#	echo -e "\n\n"
-#	putstr_cyan " expected output:"; echo; putstr_magenta "$(cat -e expected_output)"
-#	echo -e "\n\n"
-#}
-
-
-
-
-
-
-
-
-##### STDIN OPTION #####
-
-if [ "${1}" = "-stdin" ]
-then
-	cd ${SCRIPT_PATH}/stdin_test
-	read -p "BUFFER_SIZE: " -e BUFFER_SIZE
-	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
-	./gnl_test
-	make fclean  PATH="${PROJECT_PATH}" 1> /dev/null
-	exit
-fi
-
-
-
-	
 ##### REGULAR TESTS #####
 
 regular_tests()
@@ -130,8 +89,76 @@ fi
 
 
 
+##### LINE NULL #####
+
+line_null()
+{
+	cd ${SCRIPT_PATH}/line_null
+	cp ${PROJECT_PATH}/get_next_line.c .
+	cp ${PROJECT_PATH}/get_next_line_utils.c .
+	cp ${PROJECT_PATH}/get_next_line.h .
+	./run.sh ${1} ${2}
+}
+
+if [ "${1}" = "line_null" ]
+then
+	line_null ${2} ${3}
+	exit
+fi
+
+
+
+
+
+##### NEGATIVE FD #####
+
+negative_fd()
+{
+	cd ${SCRIPT_PATH}/negative_fd
+	cp ${PROJECT_PATH}/get_next_line.c .
+	cp ${PROJECT_PATH}/get_next_line_utils.c .
+	cp ${PROJECT_PATH}/get_next_line.h .
+	./run.sh ${1} ${2}
+}
+
+if [ "${1}" = "negative_fd" ]
+then
+	negative_fd ${2} ${3}
+	exit
+fi
+
+
+
+
+
+##### STDIN TEST #####
+
+stdin_test()
+{
+	echo -e "\n" \#\#\#\#\# STDIN TEST \#\#\#\#\# "\n"
+	cd ${SCRIPT_PATH}/stdin_test
+	read -p "BUFFER_SIZE: " -e BUFFER_SIZE
+	make re PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
+	./gnl_test
+	make fclean  PATH="${PROJECT_PATH}" 1> /dev/null
+}
+
+if [ "${1}" = "stdin_test" ]
+then
+	stdin_test
+	exit
+fi
+
+
+
+
+
 ##### IF NO OPTION -> TEST ALL #####
+
 if [ "${1}" = "" ]
 then
 	regular_tests
+	line_null
+	negative_fd
+	stdin_test
 fi
