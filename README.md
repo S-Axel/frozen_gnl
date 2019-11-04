@@ -3,12 +3,14 @@
 
 ### Tests for get_next_line project.
 
-#### --Work In Progress--
-These tests will improve as I progress on the get_next_line project.
+This shell script helps you test your get_next_line project.
+- It does not test the bonus
+- It does not test the leaks
+- It tests the standard input with `-stdin` option (see below)
+- It does many tests with different short files
+- It tests many different sizes of buffer
+- Use `-description` to see a description of each test (see below)
 
-You can expect regular updates.
-
-To give me feedbacks, ask questions or come work with me on gnl: I am on slack, my login is asabotie
 
 
 #### How To Test
@@ -34,11 +36,10 @@ You can also test your get_next_line like this:
 
 ```
 echo -ne "2\nHello World\n\n\nGood luck" | ./freeze.sh -stdin
-Your get_next_line returned '1' with the following line: 'Hello World'
-Your get_next_line returned '1' with the following line: ''
-Your get_next_line returned '1' with the following line: ''
-Your get_next_line returned '1' with the following line: 'Good luck'
-get_next_line return value: 0
+1|Hello World'
+1|
+1|
+0|Good luck
 ```
 
 Where `2\n` sets a buffer size of 2 and `Hello World\n\n\nGood luck` is read by your gnl through standard input.
