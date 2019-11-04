@@ -126,12 +126,12 @@ run_test()
 
 if [ "${1}" = "-debug" -a "${2}" ]
 then
-	cd ${MAIN_TEST_DIR}/${2}
+	cd ${MAIN_TEST_DIR}/${2} 1> /dev/null
 	BUFFER_SIZE=$(<buffer_size)
-	make fclean PATH="${PROJECT_PATH}"
-	make debug PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}"
+	make fclean PATH="${PROJECT_PATH}" 1> /dev/null
+	make debug PATH="${PROJECT_PATH}" BUFFER_SIZE="${BUFFER_SIZE}" 1> /dev/null
 	lldb ./gnl_test
-	make fclean PATH="${PROJECT_PATH}"
+	make fclean PATH="${PROJECT_PATH}" 1> /dev/null
 	exit
 fi
 
